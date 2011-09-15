@@ -158,7 +158,7 @@ void ddramc_hw_init(void)
         (AT91C_DDRC2_DBW_16_BITS | AT91C_DDRC2_MD_DDR2_SDRAM);
 
     ddram_config.ddramc_cr = (AT91C_DDRC2_NC_DDR10_SDR9 |       // 10 column bits (1K)
-                              AT91C_DDRC2_NR_14 |       // 14 row bits    (8K)
+                              AT91C_DDRC2_NR_13 |       // 13 row bits    (8K)
                               AT91C_DDRC2_CAS_3 |       // CAS Latency 3
                               AT91C_DDRC2_DLL_RESET_DISABLED);  // DLL not reset
 

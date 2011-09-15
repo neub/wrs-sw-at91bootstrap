@@ -267,7 +267,7 @@
 #define 	AT91C_DDRC2_NC_DDR10_SDR9           (0x1)       // (HDDRSDRC2) DDR 10 Bits | SDR 9 Bits
 #define 	AT91C_DDRC2_NC_DDR11_SDR10          (0x2)       // (HDDRSDRC2) DDR 11 Bits | SDR 10 Bits
 #define 	AT91C_DDRC2_NC_DDR12_SDR11          (0x3)       // (HDDRSDRC2) DDR 12 Bits | SDR 11 Bits
-#define AT91C_DDRC2_NR            (0x3 <<  2)   // (HDDRSDRC2) Number of Row Bits
+#define AT91C_DDRC2_NR            AT91C_DDRC2_NR_13   // (HDDRSDRC2) Number of Row Bits
 #define 	AT91C_DDRC2_NR_11                   (0x0 <<  2) // (HDDRSDRC2) 11 Bits
 #define 	AT91C_DDRC2_NR_12                   (0x1 <<  2) // (HDDRSDRC2) 12 Bits
 #define 	AT91C_DDRC2_NR_13                   (0x2 <<  2) // (HDDRSDRC2) 13 Bits

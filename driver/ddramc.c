@@ -126,7 +126,7 @@ int ddram_init(unsigned int ddram_controller_address,
     write_ddramc(ddram_controller_address, HDDRSDRC2_MR,
                  AT91C_DDRC2_MODE_EXT_LMR_CMD);
     /* Perform a write access to DDR address so that BA[1] is set to 1 and BA[0] is set to 0. */
-    *((unsigned int *)(ddram_address + (0x2 << ba_offset))) = 0;
+    *((unsigned int *)(ddram_address + 0x4000000 /* (0x2 << ba_offset) */)) = 0;
 
     // wait 2 cycles min (of tCK) = 15 ns min
     Wait(2);
@@ -135,7 +135,7 @@ int ddram_init(unsigned int ddram_controller_address,
     /* Perform a write access to DDR address so that BA[1] is set to 1 and BA[0] is set to 1. */
     write_ddramc(ddram_controller_address, HDDRSDRC2_MR,
                  AT91C_DDRC2_MODE_EXT_LMR_CMD);
-    *((unsigned int *)(ddram_address + (0x3 << ba_offset))) = 0;
+    *((unsigned int *)(ddram_address + 0x6000000 /* (0x3 << ba_offset) */)) = 0;
 
     // wait 2 cycles min (of tCK) = 15 ns min
     Wait(2);
@@ -144,7 +144,7 @@ int ddram_init(unsigned int ddram_controller_address,
     /* Perform a write access to DDR address so that BA[1] is set to 0 and BA[0] is set to 1. */
     write_ddramc(ddram_controller_address, HDDRSDRC2_MR,
                  AT91C_DDRC2_MODE_EXT_LMR_CMD);
-    *((unsigned int *)(ddram_address + (0x1 << ba_offset))) = 0;
+    *((unsigned int *)(ddram_address + 0x2000000 /* (0x1 << ba_offset) */)) = 0;
 
     // wait 200 cycles min (of tCK) = 1500 ns min
     Wait(100);
