@@ -45,6 +45,6 @@ typedef struct SDdramConfig {
 extern int ddram_init(unsigned int ddram_controller_address,
                       unsigned int ddram_address,
                       struct SDdramConfig *ddram_config);
-extern void ddramc_hw_init(void);
+extern void ddramc_hw_init();
 
 #endif                          /*SDRAMC_H_ */

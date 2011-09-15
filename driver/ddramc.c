@@ -75,10 +75,16 @@ int ddram_init(unsigned int ddram_controller_address,
     ba_offset = (ddram_config->ddramc_cr & AT91C_DDRC2_NC) + 9;          // number of column bits for DDR
     if (ddram_decod_seq(ddram_config->ddramc_cr))
         ba_offset += ((ddram_config->ddramc_cr & AT91C_DDRC2_NR) >> 2) + 11; // number of row bits
-    ba_offset += (ddram_config->ddramc_mdr & AT91C_DDRC2_DBW) ? 1 : 2;   // bus width
-
-    dbg_log(3, " ba_offset = %x ... ", ba_offset);
-
+    ba_offset += (ddram_config->ddramc_mdr & AT91C_DDRC2_DBW) ? 1 : 2;   // bus width 
+      
+    dbg_log(1,"DDR2 Config: %x (NC=%d, NR=%d, CAS=%d, ba_offset = %x)\n\r",
+	    ddram_config->ddramc_cr ,
+	    (ddram_config->ddramc_cr & AT91C_DDRC2_NC) + 9,
+	    ((ddram_config->ddramc_cr & AT91C_DDRC2_NR) >> 2) + 11,
+	    (ddram_config->ddramc_cr & AT91C_DDRC2_CAS) >> 4,
+	    ba_offset
+    );
+    
     // Step 1: Program the memory device type
     write_ddramc(ddram_controller_address, HDDRSDRC2_MDR,
                  ddram_config->ddramc_mdr);
