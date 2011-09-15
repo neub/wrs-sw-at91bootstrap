@@ -56,7 +56,7 @@ _exception_vectors:
 	b 	swi_vector   	/* Software Interrupt */
 	b 	pabt_vector  	/* Prefetch Abort */
 	b 	dabt_vector  	/* Data Abort */
-.word		_edata		/* Size of the image for SAM-BA */
+.word		_edata - _exception_vectors		/* Size of the image for SAM-BA */
 	b 	irq_vector	/* IRQ : read the AIC */
 	b 	fiq_vector      /* FIQ */
 
