@@ -86,7 +86,9 @@ int main(void)
     extern const char build_time[];
     extern const char git_user[];
     extern const char git_revision[];
-
+   
+	extern void mem_test(unsigned long ini, unsigned long end);
+  
     /*
      * ================== 1st step: Hardware Initialization ================= 
      *
@@ -106,6 +108,12 @@ int main(void)
     extern void load_1wire_info();
     load_1wire_info();
 #endif
+
+    pp_printf("Running application at %p\n", mem_test);
+    mem_test(0x70000000,0x74000000);
+    return 0; /* not reached */
+
+	//==================================2nd part of code
 
     dbg_log(1, "Begin to load image...\n\r");
     /*
