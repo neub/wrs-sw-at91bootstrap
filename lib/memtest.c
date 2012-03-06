@@ -23,9 +23,26 @@
  * MA 02111-1307 USA
  */
 
-#include <common.h>
-#include <command.h>
-#include <types.h>
+#include <pp_printf.h>
+#include <dbgu.h>
+
+/* BEGIN HACKS - to compile barebox code out of barebox */
+typedef unsigned char           uchar;
+typedef unsigned short          ushort;
+typedef unsigned int            uint;
+typedef unsigned long           ulong;
+typedef volatile unsigned long  vu_long;
+typedef volatile unsigned short vu_short;
+typedef volatile unsigned char  vu_char;
+
+#define putchar __putc
+#define printf pp_printf
+#define puts dbgu_print
+
+static inline int ctrlc(void) {return 0;}
+static inline void __putc(int c) {printf("%c", c);}
+
+/* END HACKS - to compile barebox code out of barebox */
 
 /*
  * Perform a memory test. A more complete alternative test can be
@@ -34,7 +51,7 @@
  * sub-tests.
  */
 #ifdef CONFIG_CMD_MTEST_ALTERNATIVE
-static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
+int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 {
 	vu_long *start = (vu_long *)_start;
 	vu_long *end   = (vu_long *)_end;
@@ -105,7 +122,7 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 			readback = *addr;
 			if(readback != val) {
 			     printf ("FAILURE (data line): "
-				"expected 0x%08lx, actual 0x%08lx at address 0x%p\n",
+				"expected 0x%08lx, actual 0x%08lx at address 0x%p\r\n",
 					  val, readback, addr);
 			}
 			*addr  = ~val;
@@ -113,7 +130,7 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 			readback = *addr;
 			if(readback != ~val) {
 			    printf ("FAILURE (data line): "
-				"Is 0x%08lx, should be 0x%08lx at address 0x%p\n",
+				"Is 0x%08lx, should be 0x%08lx at address 0x%p\r\n",
 					readback, ~val, addr);
 			}
 		    }
@@ -164,7 +181,7 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 		pattern = (vu_long) 0xaaaaaaaa;
 		anti_pattern = (vu_long) 0x55555555;
 
-		debug("%s:%d: addr mask = 0x%.8lx\n",
+		debug("%s:%d: addr mask = 0x%.8lx\r\n",
 			__FUNCTION__, __LINE__,
 			addr_mask);
 		/*
@@ -183,8 +200,8 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 		for (offset = 1; (offset & addr_mask) != 0; offset <<= 1) {
 		    temp = start[offset];
 		    if (temp != pattern) {
-			printf ("\nFAILURE: Address bit stuck high @ 0x%.8lx:"
-				" expected 0x%.8lx, actual 0x%.8lx\n",
+			printf ("FAILURE: Address bit stuck high @ 0x%.8lx:"
+				" expected 0x%.8lx, actual 0x%.8lx\r\n",
 				(ulong)&start[offset], pattern, temp);
 			return 1;
 		    }
@@ -200,8 +217,8 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 		    for (offset = 1; (offset & addr_mask) != 0; offset <<= 1) {
 			temp = start[offset];
 			if ((temp != pattern) && (offset != test_offset)) {
-			    printf ("\nFAILURE: Address bit stuck low or shorted @"
-				" 0x%.8lx: expected 0x%.8lx, actual 0x%.8lx\n",
+			    printf ("FAILURE: Address bit stuck low or shorted @"
+				" 0x%.8lx: expected 0x%.8lx, actual 0x%.8lx\r\n",
 				(ulong)&start[offset], pattern, temp);
 			    return 1;
 			}
@@ -236,8 +253,8 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
 		    temp = start[offset];
 		    if (temp != pattern) {
-			printf ("\nFAILURE (read/write) @ 0x%.8lx:"
-				" expected 0x%.8lx, actual 0x%.8lx)\n",
+			printf ("FAILURE (read/write) @ 0x%.8lx:"
+				" expected 0x%.8lx, actual 0x%.8lx)\r\n",
 				(ulong)&start[offset], pattern, temp);
 			return 1;
 		    }
@@ -253,8 +270,8 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 		    anti_pattern = ~pattern;
 		    temp = start[offset];
 		    if (temp != anti_pattern) {
-			printf ("\nFAILURE (read/write): @ 0x%.8lx:"
-				" expected 0x%.8lx, actual 0x%.8lx)\n",
+			printf ("FAILURE (read/write): @ 0x%.8lx:"
+				" expected 0x%.8lx, actual 0x%.8lx)\r\n",
 				(ulong)&start[offset], anti_pattern, temp);
 			return 1;
 		    }
@@ -264,7 +281,7 @@ static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 
 }
 #else
-static int mem_test(ulong _start, ulong _end, ulong pattern)
+int mem_test(ulong _start, ulong _end, ulong pattern)
 {
 	vu_long	*addr;
 	vu_long *start = (vu_long *)_start;
@@ -296,8 +313,8 @@ static int mem_test(ulong _start, ulong _end, ulong pattern)
 		for (addr=start,val=pattern; addr<end; addr++) {
 			readback = *addr;
 			if (readback != val) {
-				printf ("\nMem error @ 0x%08X: "
-					"found 0x%08lX, expected 0x%08lX\n",
+				printf ("\r\nMem error @ 0x%08X: "
+					"found 0x%08lX, expected 0x%08lX\r\n",
 					(uint)addr, readback, val);
 				rcode = 1;
 			}
@@ -321,35 +338,3 @@ static int mem_test(ulong _start, ulong _end, ulong pattern)
 	return rcode;
 }
 #endif
-
-static int do_mem_mtest(struct command *cmdtp, int argc, char *argv[])
-{
-	ulong start, end, pattern = 0;
-
-	if (argc < 3)
-		return COMMAND_ERROR_USAGE;
-
-	start = simple_strtoul(argv[1], NULL, 0);
-	end = simple_strtoul(argv[2], NULL, 0);
-
-	if (argc > 3)
-		pattern = simple_strtoul(argv[3], NULL, 0);
-
-	printf ("Testing 0x%08x ... 0x%08x:\n", (uint)start, (uint)end);
-	
-	return mem_test(start, end, pattern);
-}
-
-static const __maybe_unused char cmd_mtest_help[] =
-"Usage: <start> <end> "
-#ifdef CONFIG_CMD_MTEST_ALTERNATIVE
-"[pattern]"
-#endif
-"\nsimple RAM read/write test\n";
-
-BAREBOX_CMD_START(mtest)
-	.cmd		= do_mem_mtest,
-	.usage		= "simple RAM test",
-	BAREBOX_CMD_HELP(cmd_mtest_help)
-BAREBOX_CMD_END
-
