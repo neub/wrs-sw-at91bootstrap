@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <pp_printf.h>
 /*
  * minimal vsprintf: only %s and hex values
  * Alessandro Rubini 2010, based on code in u-boot (from older Linux)
