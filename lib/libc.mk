@@ -9,6 +9,7 @@ COBJS-y				+=	$(LIBC)udiv.o
 COBJS-y				+=	$(LIBC)eabi_utils.o
 COBJS-y				+=	$(LIBC)printf-mini.o
 COBJS-y				+=	$(LIBC)diag-printf.o
+COBJS-y				+=	$(LIBC)memtest.o
 
 
 SOBJS-y				+=	$(LIBC)_udivsi3.o
