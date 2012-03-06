@@ -30,6 +30,7 @@
  * Creation            : ODi Apr 19th 2006
  *-----------------------------------------------------------------------------
  */
+#include <pp_printf.h>
 #include "part.h"
 #include "main.h"
 #include "dbgu.h"
