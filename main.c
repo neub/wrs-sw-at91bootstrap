@@ -83,6 +83,10 @@ void Wait(unsigned int count)
 /*------------------------------------------------------------------------------*/
 int main(void)
 {
+    extern const char build_time[];
+    extern const char git_user[];
+    extern const char git_revision[];
+
     /*
      * ================== 1st step: Hardware Initialization ================= 
      *
@@ -91,6 +95,8 @@ int main(void)
 #ifdef CONFIG_HW_INIT
     hw_init();
 #endif
+
+    pp_printf("Compiled by %s (%s)\r\ngit rev:%s\r\n\r\n",git_user,build_time,git_revision);
 
 #ifdef CONFIG_USER_HW_INIT
     user_hw_init();
