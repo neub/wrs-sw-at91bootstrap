@@ -22,3 +22,4 @@ binaries
 tags
 *.swp
 .tmpconfig*
+version.c
