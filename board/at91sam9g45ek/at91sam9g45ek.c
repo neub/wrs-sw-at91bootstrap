@@ -80,6 +80,17 @@ void hw_init(void)
     };
 
     /*
+     * Configure LED GPIOs 
+     */
+    const struct pio_desc led_gpio[] = {
+	{"D11",   AT91C_PIN_PA(0), 0, PIO_OPENDRAIN, PIO_OUTPUT},	//Switch on D11 when booting start.
+	{"D12",   AT91C_PIN_PA(1), 1, PIO_OPENDRAIN, PIO_OUTPUT}, 	//Setup D12 such to use when the programs end loading.
+	{"DDone", AT91C_PIN_PA(2), 0, PIO_DEFAULT, PIO_INPUT}, 	//Setup FPGA LED Done in read mode
+	{"DInit", AT91C_PIN_PA(3), 0, PIO_DEFAULT, PIO_INPUT} 	//Setup FPGA LED Init in read mode
+    };
+    pio_setup(led_gpio);
+    
+    /*
      * Disable watchdog 
      */
     writel(AT91C_WDTC_WDDIS, AT91C_BASE_WDTC + WDTC_WDMR);
