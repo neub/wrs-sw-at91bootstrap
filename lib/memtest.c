@@ -26,6 +26,7 @@
 #include <pp_printf.h>
 #include <dbgu.h>
 #include <debug.h>
+#include <gpio.h>
 //#include <stdlib.h>
 
 /* BEGIN HACKS - to compile barebox code out of barebox */
@@ -120,6 +121,8 @@ int mem_test_integrity(ulong _start, ulong _end, ulong pattern)
 			//Increment actual read value and decrement write value.
 			val += incr;
 			val_next -= incr;
+			
+			if((*addr % (1024*100)) == 0) pio_set_value(AT91C_PIN_PA(0),*addr % (2048*100)); //Blinking light while testing
 		}
 
 		printf("\tOK\r\n");
@@ -401,6 +404,10 @@ int mem_test(ulong _start, ulong _end, ulong pattern_unused)
 	printf ("OK: bus line, address line and integrity are OK\n\r\n\r");
 	printf ("Now it will continue to check integrity with various patterns. (Ctrl+C to exit)...\n\r");
 
+	pio_set_value(AT91C_PIN_PA(0),1);
+	pio_set_value(AT91C_PIN_PA(1),0);
+	
+	
 	return mem_test_integrity(_start,_end,pattern_unused);
 
 }
