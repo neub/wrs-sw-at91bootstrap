@@ -79,7 +79,6 @@ fiq_vector:
  * First of all, write a procedure, that can be called from C or asm,
  * to flip leds a number of times, after a small delay
  */
-
 flip_leds: /* input: r0 is the count of flips */
 
 	/* a delay */
@@ -139,9 +138,19 @@ _relocate_to_sram:
 	mov	r2, #0x00008000
 	str	r2, [r1]
 
+	/* test 4x the flip_leds procedure */
+	mov r0, #0x4
+	bl flip_leds
+
+	/* Call the lowlevel clock init function in ./driver/pmc.c */ 
 	ldr     r4, = lowlevel_clock_init
 	mov     lr, pc
 	bx      r4
+
+	/* test 8x the flip_leds procedure */
+	mov r0, #0x8
+	bl flip_leds
+
 
 #if 0
 _setup_clocks:
