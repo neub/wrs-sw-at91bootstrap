@@ -74,6 +74,34 @@ irq_vector:
 	b 	irq_vector
 fiq_vector:
 	b 	fiq_vector
+
+/*
+ * First of all, write a procedure, that can be called from C or asm,
+ * to flip leds a number of times, after a small delay
+ */
+flip_leds: /* input: r0 is the count of flips */
+
+	/* a delay */
+	ldr r1, =200
+1:	subs r1, r1, #1
+	bne 1b
+
+	ldr r1, =0xfffff200  /* PIOA */
+	mov r2, #3           /* bit 0 and 1: both leds */
+
+	str r2, [r1] /* enable */
+	str r2, [r1, #0x10] /* output enable */
+	cmp r0, #0
+	beq 2f
+0:	str r2, [r1, #0x34] /* output clear (led on) */
+	str r2, [r1, #0x30] /* output set (led off) */
+	subs r0, r0, #1
+	bne 0b
+
+2:	bx lr
+
+.ltorg
+
 reset_vector:
 
 /* Init the stack */
@@ -105,9 +133,24 @@ _relocate_to_sram:
 	ldr	pc, =_setup_clocks
 #endif /* CONFIG_FLASH */
 
+	/* disable watchdog */
+	ldr	r1, =0xFFFFFD44
+	mov	r2, #0x00008000
+	str	r2, [r1]
+
+	/* test 4x the flip_leds procedure */
+	mov r0, #0x4
+	bl flip_leds
+
+	/* Call the lowlevel clock init function in ./driver/pmc.c */
 	ldr     r4, = lowlevel_clock_init
 	mov     lr, pc
 	bx      r4
+
+	/* test 8x the flip_leds procedure */
+	mov r0, #0x8
+	bl flip_leds
+
 
 #if 0
 _setup_clocks:
