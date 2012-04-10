@@ -105,6 +105,11 @@ _relocate_to_sram:
 	ldr	pc, =_setup_clocks
 #endif /* CONFIG_FLASH */
 
+	/* disable watchdog */
+	ldr	r1, =0xFFFFFD44
+	mov	r2, #0x00008000
+	str	r2, [r1]
+
 	ldr     r4, = lowlevel_clock_init
 	mov     lr, pc
 	bx      r4
