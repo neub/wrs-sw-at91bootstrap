@@ -292,7 +292,7 @@ version.c: $(SOBJS-y) $(COBJS-y) .git/HEAD .git/index
 	@echo "**/" >> $@   
 	@echo 'const char build_time[] = __DATE__ " @ " __TIME__ ;' >> $@
 	@echo "const char git_user[] = \"$(shell git config --get user.name)\";" >> $@
-	@echo "const char git_revision[] = \"$(shell git rev-parse HEAD)$(shell if git status -s > /dev/null; then echo '+'; fi;)\";" >> $@
+	@echo "const char git_revision[] = \"$(shell git log --abbrev-commit --pretty=oneline -1 . | cut -d" " -f1)$(shell if git status -s > /dev/null; then echo '+'; fi;)\";" >> $@
 	@echo "" >> $@
 endif
 
