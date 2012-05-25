@@ -86,9 +86,13 @@ void hw_init(void)
 	{"D11",   AT91C_PIN_PA(0), 0, PIO_OPENDRAIN, PIO_OUTPUT},	//Switch on D11 when booting start.
 	{"D12",   AT91C_PIN_PA(1), 1, PIO_OPENDRAIN, PIO_OUTPUT}, 	//Setup D12 such to use when the programs end loading.
 	{"DDone", AT91C_PIN_PA(2), 0, PIO_DEFAULT, PIO_INPUT}, 	//Setup FPGA LED Done in read mode
-	{"DInit", AT91C_PIN_PA(3), 0, PIO_DEFAULT, PIO_INPUT} 	//Setup FPGA LED Init in read mode
+	{"DInit", AT91C_PIN_PA(3), 0, PIO_DEFAULT, PIO_INPUT}, 	//Setup FPGA LED Init in read mode
+	{"FPGA button", AT91C_PIN_PA(4), 0, PIO_DEFAULT, PIO_INPUT} 	//Setup FPGA Button in read mode
     };
     pio_setup(led_gpio);
+
+	//Enable PIOA Clock in the PMC
+	writel((1 << AT91C_ID_PIOA), PMC_PCER + AT91C_BASE_PMC);	
     
     /*
      * Disable watchdog 
