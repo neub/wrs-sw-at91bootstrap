@@ -12,6 +12,8 @@ config/zconf.tab.o
 config/.depend
 .config.cmd
 .config.old
+.cproject
+.project
 .auto.deps
 build
 result
