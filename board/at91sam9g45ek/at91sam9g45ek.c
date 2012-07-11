@@ -80,6 +80,26 @@ void hw_init(void)
     };
 
     /*
+     * Configure LED GPIOs
+     */
+    const struct pio_desc led_gpio[] = {
+	{"CPU_LED1",   AT91C_PIN_PA(0), 0, PIO_OPENDRAIN, PIO_OUTPUT},	//Switch on CPU_LED1 when booting start.
+	{"CPU_LED2",   AT91C_PIN_PA(1), 1, PIO_OPENDRAIN, PIO_OUTPUT}, 	//Setup CPU_LED2 such to use when the programs end loading.
+	{"FPGA_DONE", AT91C_PIN_PA(2), 0, PIO_DEFAULT, PIO_INPUT}, 		//Setup FPGA LED Done in read mode
+	{"FPGA_INITB", AT91C_PIN_PA(3), 0, PIO_DEFAULT, PIO_INPUT}, 	//Setup FPGA LED Init in read mode
+	{"FPGA BUTTON", AT91C_PIN_PA(4), 0, PIO_DEFAULT, PIO_INPUT}, 	//Setup FPGA Button in read mode
+	{"ARM_BOOT_ALT", AT91C_PIN_PC(7), 1, PIO_PULLUP, PIO_INPUT}, 	//Alternative boot with ARM_BOOT_SEL_GPIO jumper in read mode (default is one)
+	{"FAN_BOX_TACH", AT91C_PIN_PE(7), 0, PIO_DEFAULT, PIO_INPUT}, 	//Setup FAN BOX tachometer in read mode
+	{"FAN_BOX_EN", AT91C_PIN_PB(20), 1, PIO_DEFAULT, PIO_OUTPUT}, 	//Turn on FAN BOX
+	{"FAN_BOX_EN", AT91C_PIN_PB(20), 1, PIO_PULLUP, PIO_INPUT} 		//Then setup in input PULLUP to lower the speed (R deviser)
+    };
+    pio_setup(led_gpio);
+
+
+    //Enable PIOA Clock in the PMC
+	writel((1 << AT91C_ID_PIOA), PMC_PCER + AT91C_BASE_PMC);
+
+    /*
      * Disable watchdog 
      */
     writel(AT91C_WDTC_WDDIS, AT91C_BASE_WDTC + WDTC_WDMR);
