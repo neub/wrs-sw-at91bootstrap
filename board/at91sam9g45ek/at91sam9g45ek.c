@@ -184,7 +184,11 @@ void ddramc_hw_init()
                               AT91C_DDRC2_CAS_3 |       // CAS Latency 3
                               AT91C_DDRC2_DLL_RESET_DISABLED);  // DLL not reset
 
-    ddram_config.ddramc_rtr = 0x24B;
+    /* from data sheet: The DDR2-SDRAM device requires a
+     * refresh every 15.625 s or 7.81 s. With a 133 MHz frequency, the
+     * refresh timer count register must to be set with (15.625*133
+     * MHz) = 2079 i.e. 0x081f or (7.81*133 MHz) = 1039 i.e. 0x040f. */
+    ddram_config.ddramc_rtr = 0x40f;
 
     ddram_config.ddramc_t0pr = (AT91C_DDRC2_TRAS_6  |    //  6 * 7.5 = 45   ns
                                 AT91C_DDRC2_TRCD_2  |    //  2 * 7.5 = 15   ns
