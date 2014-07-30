@@ -396,6 +396,12 @@
 #define AT91C_DDRC2_TWTR          (0x1 << 24)   // (HDDRSDRC2) Internal write to read delay
 #define 	AT91C_DDRC2_TWTR_0                    (0x0 << 24)       // (HDDRSDRC2) Value :  0
 #define 	AT91C_DDRC2_TWTR_1                    (0x1 << 24)       // (HDDRSDRC2) Value :  1
+#define 	AT91C_DDRC2_TWTR_2                    (0x2 << 24)       // (HDDRSDRC2) Value :  2
+#define 	AT91C_DDRC2_TWTR_3                    (0x3 << 24)       // (HDDRSDRC2) Value :  3
+#define 	AT91C_DDRC2_TWTR_4                    (0x4 << 24)       // (HDDRSDRC2) Value :  4
+#define 	AT91C_DDRC2_TWTR_5                    (0x5 << 24)       // (HDDRSDRC2) Value :  5
+#define 	AT91C_DDRC2_TWTR_6                    (0x6 << 24)       // (HDDRSDRC2) Value :  6
+#define 	AT91C_DDRC2_TWTR_7                    (0x7 << 24)       // (HDDRSDRC2) Value :  7
 #define AT91C_DDRC2_TMRD          (0xF << 28)   // (HDDRSDRC2) Load mode register command to active or refresh command
 #define 	AT91C_DDRC2_TMRD_0                    (0x0 << 28)       // (HDDRSDRC2) Value :  0
 #define 	AT91C_DDRC2_TMRD_1                    (0x1 << 28)       // (HDDRSDRC2) Value :  1

@@ -196,15 +196,15 @@ void ddramc_hw_init()
                                 AT91C_DDRC2_TRC_8   |    //  8 * 7.5 = 75   ns
                                 AT91C_DDRC2_TRP_2   |    //  2 * 7.5 = 22.5 ns
                                 AT91C_DDRC2_TRRD_XX |    //  see include/DDR2_MT47H_inc.h
-                                AT91C_DDRC2_TWTR_1  |    //  1 clock cycle
-                                AT91C_DDRC2_TMRD_2);     //  2 clock cycles
+                                AT91C_DDRC2_TWTR_2  |    //  2 clock cycles
+                                AT91C_DDRC2_TMRD_2);     //  2 clock cycles (note 37 in D.S.)
 
     ddram_config.ddramc_t1pr = (AT91C_DDRC2_TXP_2 |     //  2 * 7.5 = 15 ns
                                 200 << 16 |     // 200 clock cycles, TXSRD: Exit self refresh delay to Read command
                                 16 << 8 |       // 16 * 7.5 = 120 ns TXSNR: Exit self refresh delay to non read command
                                 AT91C_DDRC2_TRFC_14 << 0);      // 14 * 7.5 = 142 ns (must be 140 ns for 1Gb DDR)
 
-    ddram_config.ddramc_t2pr = (AT91C_DDRC2_TRTP_1    |  //  1 * 7.5 = 7.5 ns
+    ddram_config.ddramc_t2pr = (AT91C_DDRC2_TRTP_2    |  //  2 * 7.5 = 15 ns (note 37 in D.S.)
                                 AT91C_DDRC2_TRPA_XX   |  // see include/DDR2_MT47H_inc.h
                                 AT91C_DDRC2_TXARDS_XX |  // see include/DDR2_MT47H_inc.h
                                 AT91C_DDRC2_TXARD_2);    //  2 clock cycles
